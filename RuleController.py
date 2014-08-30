@@ -13,7 +13,6 @@ class RuleController():
 			return False
 
 		if not ((sourcePiece in self.lightPieces.values() and destinationPiece in self.lightPieces.values()) or (sourcePiece in self.darkPieces.values() and destinationPiece in self.darkPieces.values())):
-			print sourcePiece.pieceSpecificMove(source, destination, self.board, self.lightPieces, self.darkPieces)
 			if sourcePiece.pieceSpecificMove(source, destination, self.board, self.lightPieces, self.darkPieces):
 				self.board[destination[0]][destination[1]] = self.board[source[0]][source[1]]
 				self.board[source[0]][source[1]].position = destination
