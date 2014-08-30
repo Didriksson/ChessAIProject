@@ -10,8 +10,15 @@ class GamePieces(object):
 class Knight(GamePieces):
 	def __init__(self, image, position):
 		GamePieces.__init__(self,image, position)
-	def pieceSpecificMove(self,source, destination):
-		return True
+	def pieceSpecificMove(self,source, destination, board, lightPieces, darkPieces):
+		#Light!
+
+		deltaY = (source[0] - destination[0])
+		deltaX = (source[1] - destination[1])
+		if abs(deltaX) == 2 and abs(deltaY) == 1 or abs(deltaX) == 1 and abs(deltaY) == 2:
+			return True
+		else:
+			return False
 
 		
 class Rook(GamePieces):
@@ -23,7 +30,7 @@ class Rook(GamePieces):
 class King(GamePieces):
 	def __init__(self, image, position):
 		GamePieces.__init__(self,image, position)		
-	def pieceSpecificMove(self,source, destination):
+	def pieceSpecificMove(self,source, destination, board, lightPieces, darkPieces):
 		return True
 
 class Queen(GamePieces):
