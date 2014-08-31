@@ -34,4 +34,3 @@ class RuleController():
 			if value is piece:
 				del self.darkPieces[key]
 				break
-		

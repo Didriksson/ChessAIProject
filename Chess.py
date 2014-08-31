@@ -3,6 +3,7 @@ import Block
 import Spritesheet
 import GamePieces
 import RuleController
+
 class ChessGame:
 	pygame.init()
 	darkBrown = 183,112,0
@@ -65,7 +66,7 @@ class ChessGame:
 		'darkBishop2' : GamePieces.Bishop(self.images.get('darkBishop'),(0,2)),
 		'darkPawn1' : GamePieces.Pawn(self.images.get('darkPawn'),(1,0)),
 		'darkPawn2' : GamePieces.Pawn(self.images.get('darkPawn'),(1,1)),
-		'darkPawn3' : GamePieces.Pawn(self.images.get('darkPawn'),(1,2)),		
+		'darkPawn3' : GamePieces.Pawn(self.images.get('darkPawn'),(1,2)),	
 		'darkPawn4' : GamePieces.Pawn(self.images.get('darkPawn'),(1,3)),
 		'darkPawn5' : GamePieces.Pawn(self.images.get('darkPawn'),(1,4)),
 		'darkPawn6' : GamePieces.Pawn(self.images.get('darkPawn'),(1,5)),
@@ -126,7 +127,6 @@ class ChessGame:
 						self.ruleController.presentMove(self.selection1, self.selection2)
 						self.selection1 = () 
 						self.selection2 == ()
-	
 	
 	def paintBoard(self):
 		#Paint board

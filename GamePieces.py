@@ -1,41 +1,74 @@
 import pygame
+import RuleController
 
 class GamePieces(object):
 	def __init__(self, image, position):
 		self.image = image
 		self.position = position
 		
-		
-		
 class Knight(GamePieces):
 	def __init__(self, image, position):
 		GamePieces.__init__(self,image, position)
 	def pieceSpecificMove(self,source, destination, board, lightPieces, darkPieces):
-		#Light!
-
 		deltaY = (source[0] - destination[0])
 		deltaX = (source[1] - destination[1])
 		if abs(deltaX) == 2 and abs(deltaY) == 1 or abs(deltaX) == 1 and abs(deltaY) == 2:
 			return True
 		else:
 			return False
+		
+class King(GamePieces):
+	def __init__(self, image, position):
+		GamePieces.__init__(self,image, position)
+	def pieceSpecificMove(self,source, destination, board, lightPieces, darkPieces):
+		return True
 
 		
 class Rook(GamePieces):
 	def __init__(self, image, position):
 		GamePieces.__init__(self,image, position)
-	def pieceSpecificMove(self,source, destination):
-		return True
-		
-class King(GamePieces):
-	def __init__(self, image, position):
-		GamePieces.__init__(self,image, position)		
 	def pieceSpecificMove(self,source, destination, board, lightPieces, darkPieces):
-		return True
+		deltaY = (source[0] - destination[0])
+		deltaX = (source[1] - destination[1])
+		
+		#Going wide!
+		if abs(deltaX) > 0 and abs(deltaY) == 0:
+			#Leftie!
+			if(deltaX < 0):
+				self.deltaPositions = range(source[1]+1, destination[1])
+			#Rightie!
+			else:
+				self.deltaPositions = range(destination[1]+1, source[1])
+			
+			for index in self.deltaPositions:
+				if board[source[0]][index] != 'EMPTY':
+					return False
+			return True
+			
+		#Going high!
+		elif abs(deltaX) == 0 and abs(deltaY) > 0:
+			#Upsie!
+			print (destination[0],destination[1])
+			if(deltaY < 0):
+				self.deltaPositions = range(source[0]+1, destination[0])
+			#Downie!
+			else:
+				self.deltaPositions = range(destination[0]+1, source[0])
+			
+			print self.deltaPositions
+			for index in self.deltaPositions:
+				print board[index][source[1]]
+				if board[index][source[1]] != 'EMPTY':
+					return False
+			return True
+		
+		else:
+			return False
+
 
 class Queen(GamePieces):
 	def __init__(self, image, position):
-		GamePieces.__init__(self,image, position)		
+		GamePieces.__init__(self,image, position)	
 	def pieceSpecificMove(self,source, destination):
 		return True
 
