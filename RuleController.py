@@ -1,3 +1,4 @@
+import RulesPieces
 
 class RuleController():
 	
@@ -13,7 +14,9 @@ class RuleController():
 			return False
 
 		if not ((sourcePiece in self.lightPieces.values() and destinationPiece in self.lightPieces.values()) or (sourcePiece in self.darkPieces.values() and destinationPiece in self.darkPieces.values())):
-			if sourcePiece.pieceSpecificMove(source, destination, self.board, self.lightPieces, self.darkPieces):
+			nameOfPiece = type(sourcePiece).__name__
+			moveOkay = getattr(RulesPieces, nameOfPiece.lower())
+			if moveOkay(source, destination, self.board, self.lightPieces, self.darkPieces):
 				if(destinationPiece != 'EMPTY'):
 					self.removePieceFromList(destinationPiece)
 				self.board[destination[0]][destination[1]] = self.board[source[0]][source[1]]
