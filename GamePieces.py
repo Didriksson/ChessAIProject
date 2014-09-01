@@ -116,6 +116,21 @@ class Pawn(GamePieces):
 class Bishop(GamePieces):
 	def __init__(self, image, position):
 		GamePieces.__init__(self,image, position)
-	def pieceSpecificMove(self,source, destination):
-		return True
+	def pieceSpecificMove(self,source, destination, board, lightPieces, darkPieces):
+		deltaY = destination[0]-source[0]
+		deltaX = destination[1]-source[1]
 		
+		if (deltaX !=0 and deltaY !=0) and abs(deltaX/deltaY) == 1:
+			if(deltaY < 0):
+				self.deltaPositions = range(source[0], destination[0])
+				self.xModifier = 1
+			else:
+				self.deltaPositions = range(destination[0], destination[0])
+				self.xModifier = -1
+			for index in self.deltaPositions:
+				if board[index][source[1] + self.xModifier] != 'EMPTY':
+					if not board[source[0]][source[1]]:
+						return False
+			return True
+		else:
+			return False
