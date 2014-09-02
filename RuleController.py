@@ -37,3 +37,24 @@ class RuleController():
 			if value is piece:
 				del self.darkPieces[key]
 				break
+
+	def isChess(self, currentPlayer):
+		if currentPlayer == self.lightPieces:
+			kingsPosition = self.getPositionForPiece(self.darkPieces['darkKing'])
+		else:
+			kingsPosition = self.getPositionForPiece(self.lightPieces['lightKing'])
+			
+		for piece in currentPlayer.values():
+			nameOfPiece = type(piece).__name__
+			moveOkay = getattr(RulesPieces, nameOfPiece.lower())
+			source = self.getPositionForPiece(piece)
+			if moveOkay(source, kingsPosition, self.board, self.lightPieces, self.darkPieces):
+				return True
+		return False
+		
+	def getPositionForPiece(self,piece):
+		for row in range(0,len(self.board)):
+			if piece in self.board[row]:
+				col = self.board[row].index(piece)
+				break
+		return (row, col)

@@ -3,6 +3,7 @@ import Block
 import Spritesheet
 import GamePieces
 import RuleController
+import AIFunctions
 
 class ChessGame:
 	pygame.init()
@@ -12,6 +13,7 @@ class ChessGame:
 	white = 255,255,255
 	marginX = 5 
 	marginY = 5
+	winner = None
 
 	
 	WIDTHBLOCK = 64
@@ -33,6 +35,7 @@ class ChessGame:
 		self.createPieces()
 		self.initializeBoard()
 		self.ruleController = RuleController.RuleController(self.board,self.darkPieces,self.lightPieces)
+		self.aiController = AIFunctions.AIFunctions(self.board,self.darkPieces, self.lightPieces)
 		self.mainLoop()
 	
 	
@@ -52,6 +55,11 @@ class ChessGame:
 		'lightBishop': imageList[10],
 		'lightPawn': imageList[11]
 		}
+		
+		
+		# initialize font; must be called after 'pygame.init()' to avoid 'Font not Initialized' error
+		self.myfont = pygame.font.SysFont("monospace", 35)
+
 	
 	def createPieces(self):
 		
@@ -112,29 +120,42 @@ class ChessGame:
 			
 	def mainLoop(self):
 		self.currentPlayer = self.lightPieces
+		print len(self.aiController.getAllMovesForPieces(self.currentPlayer))
+		print self.aiController.getAllMovesForPieces(self.currentPlayer)
 		while 1:
-			self.paintBoard()
-			for event in pygame.event.get():
-				if event.type == pygame.QUIT:
-					pygame.quit()
-				if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-					position = event.pos
-					row = position[1]//self.HEIGHTBLOCK
-					col = position[0]//self.WIDTHBLOCK
-					if not self.selection1:
-						if self.board[row][col] in self.currentPlayer.values():
-							self.selection1 = (row, col)
-					elif self.selection1 == (row,col):
-						self.selection1 = ()
-					else:
-						self.selection2 = (row,col)
-						if self.ruleController.presentMove(self.selection1, self.selection2):
-							self.selection1 = () 
-							self.selection2 == ()
-							if self.currentPlayer == self.lightPieces:
-								self.currentPlayer = self.darkPieces
-							else:
-								self.currentPlayer = self.lightPieces
+			if(self.winner == None):
+				self.paintBoard()
+				for event in pygame.event.get():
+					if event.type == pygame.QUIT:
+						pygame.quit()
+					if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+						position = event.pos
+						row = position[1]//self.HEIGHTBLOCK
+						col = position[0]//self.WIDTHBLOCK
+						if not self.selection1:
+							if self.board[row][col] in self.currentPlayer.values():
+								self.selection1 = (row, col)
+						elif self.selection1 == (row,col):
+							self.selection1 = ()
+						else:
+							self.selection2 = (row,col)
+							if self.ruleController.presentMove(self.selection1, self.selection2):
+								self.selection1 = () 
+								self.selection2 == ()
+								if self.currentPlayer == self.lightPieces:
+									self.currentPlayer = self.darkPieces
+								else:
+									self.currentPlayer = self.lightPieces
+								if 'darkKing' not in self.darkPieces.keys():
+									self.winner = "Light!"
+			else:
+				for event in pygame.event.get():
+					if event.type == pygame.QUIT:
+						pygame.quit()
+				label = self.myfont.render("Congratulations " + self.winner, 1, (255,0,0))
+				self.screen.blit(label, (50, 150))
+				pygame.display.flip()
+
 	
 	def paintBoard(self):
 		#Paint board
@@ -149,7 +170,10 @@ class ChessGame:
 					pygame.draw.rect(self.screen,self.darkBrown, ((col*self.WIDTHBLOCK),(row*self.HEIGHTBLOCK),self.WIDTHBLOCK,self.HEIGHTBLOCK))
 				if self.board[row][col] != "EMPTY":
 					self.screen.blit(self.board[row][col].image, ((col*self.WIDTHBLOCK),(row*self.HEIGHTBLOCK)))
-			
+		
+		if self.ruleController.isChess(self.currentPlayer):
+			label = self.myfont.render("Chess!!", 1, (255,0,0))
+			self.screen.blit(label, (200, 50))
 		pygame.display.flip()
 
 ChessGame().start()	
