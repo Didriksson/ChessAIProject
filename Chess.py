@@ -93,6 +93,8 @@ class ChessGame:
 		'lightPawn8' : GamePieces.Pawn(self.images.get('lightPawn'),(6,7)),
 		}
 		
+
+		
 		
 	def initializeBoard(self):
 		#Initialize board with pieces
@@ -109,6 +111,7 @@ class ChessGame:
 			self.board[piece.position[0]][piece.position[1]] = piece		
 			
 	def mainLoop(self):
+		self.currentPlayer = self.lightPieces
 		while 1:
 			self.paintBoard()
 			for event in pygame.event.get():
@@ -119,14 +122,19 @@ class ChessGame:
 					row = position[1]//self.HEIGHTBLOCK
 					col = position[0]//self.WIDTHBLOCK
 					if not self.selection1:
-						self.selection1 = (row, col)
+						if self.board[row][col] in self.currentPlayer.values():
+							self.selection1 = (row, col)
 					elif self.selection1 == (row,col):
 						self.selection1 = ()
 					else:
 						self.selection2 = (row,col)
-						self.ruleController.presentMove(self.selection1, self.selection2)
-						self.selection1 = () 
-						self.selection2 == ()
+						if self.ruleController.presentMove(self.selection1, self.selection2):
+							self.selection1 = () 
+							self.selection2 == ()
+							if self.currentPlayer == self.lightPieces:
+								self.currentPlayer = self.darkPieces
+							else:
+								self.currentPlayer = self.lightPieces
 	
 	def paintBoard(self):
 		#Paint board
