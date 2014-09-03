@@ -1,41 +1,54 @@
-def knight(source, destination, board, lightPieces, darkPieces):
+def knight(source, destination, board):
 	deltaY = (source[0] - destination[0])
 	deltaX = (source[1] - destination[1])
-	if tryingToTakeOwnPiece(source, destination, board, lightPieces, darkPieces):
+	
+	sourceLocation = board[source[0]][source[1]]
+	destinationLocation = board[destination[0]][destination[1]]
+	
+	if sourceLocation == 'EMPTY':
 		return False
+	
+	if destinationLocation != 'EMPTY':
+		if sourceLocation.color == destinationLocation.color:
+			return False
+		
 	if abs(deltaX) == 2 and abs(deltaY) == 1 or abs(deltaX) == 1 and abs(deltaY) == 2:
 		return True
 	else:
 		return False
 	
-def king(source, destination, board, lightPieces, darkPieces):
+def king(source, destination, board):
 	deltaY = destination[0]-source[0]
 	deltaX = destination[1]-source[1]
-	if tryingToTakeOwnPiece(source, destination, board, lightPieces, darkPieces):
+	
+	sourceLocation = board[source[0]][source[1]]
+	destinationLocation = board[destination[0]][destination[1]]
+
+	if sourceLocation == 'EMPTY':
 		return False
-	sourcePiece = board[source[0]][source[1]]
-	destinationPiece = board[destination[0]][destination[1]]
-	if abs(deltaY) <= 1 and abs(deltaX) <=1:
-		if sourcePiece in lightPieces.values():
-			if destinationPiece == 'EMPTY' or destinationPiece in darkPieces.values():
-				return True
-			else:
-				return False
-		elif sourcePiece in darkPieces.values():
-			if destinationPiece == 'EMPTY' or destinationPiece in lightPieces.values():
-				return True
-			else:
-				return False
-		else:
+	
+	if destinationLocation != 'EMPTY':
+		if sourceLocation.color == destinationLocation.color:
 			return False
+			
+	if abs(deltaY) <= 1 and abs(deltaX) <=1:
+		return True
+	else:
+		return False
 
 	
-def rook(source, destination, board, lightPieces, darkPieces):
+def rook(source, destination, board):
 	deltaY = (source[0] - destination[0])
 	deltaX = (source[1] - destination[1])
+	sourceLocation = board[source[0]][source[1]]
+	destinationLocation = board[destination[0]][destination[1]]
 	
-	if tryingToTakeOwnPiece(source, destination, board, lightPieces, darkPieces):
+	if sourceLocation == 'EMPTY':
 		return False
+	
+	if destinationLocation != 'EMPTY':
+		if sourceLocation.color == destinationLocation.color:
+			return False
 	
 	#Going wide!
 	if abs(deltaX) > 0 and abs(deltaY) == 0:
@@ -69,79 +82,84 @@ def rook(source, destination, board, lightPieces, darkPieces):
 		return False
 
 
-def queen(source, destination, board, lightPieces, darkPieces):
-	if king(source, destination, board, lightPieces, darkPieces):
+def queen(source, destination, board):
+	if king(source, destination, board):
 		return True
-	if rook(source, destination, board, lightPieces, darkPieces):
+	if rook(source, destination, board):
 		return True
-	if pawn(source, destination, board, lightPieces, darkPieces):
+	if pawn(source, destination, board):
 		return True
-	if bishop(source, destination, board, lightPieces, darkPieces):
+	if bishop(source, destination, board):
 		return True
 
 	return False
 
-def pawn(source, destination, board, lightPieces, darkPieces):
+def pawn(source, destination, board):
 	deltaY = source[0] - destination[0]
 	deltaX = source[1] - destination[1]
+	
+	sourceLocation = board[source[0]][source[1]]
+	destinationLocation = board[destination[0]][destination[1]]
+	
+	if sourceLocation == 'EMPTY':
+		return False
+	
+	if destinationLocation != 'EMPTY':
+		if sourceLocation.color == destinationLocation.color:
+			return False
+
 	#Light!
-	if board[source[0]][source[1]] in lightPieces.values():
+	if sourceLocation.color == 'white':
 		#Moves up or down on the board.
+		print "This is it2!"
 		if (deltaY == 2 and source[0] == 6) or (deltaX == 0 and deltaY == 1):
-			if board[destination[0]][destination[1]] == "EMPTY" and deltaX == 0:
+			if destinationLocation == "EMPTY" and deltaX == 0:
 				return True
 			else:
 				return False
 		#Take another.
 		else:
-			if deltaY == 1 and (abs(deltaX) == 1):
-					if(board[destination[0]][destination[1]] in darkPieces.values()):
-						return True
-					else:
-						return False
+			if deltaY == 1 and (abs(deltaX) == 1) and destinationLocation != 'EMPTY':
+				return True
 	#Dark!
-	if board[source[0]][source[1]] in darkPieces.values():
+	elif sourceLocation.color == 'black':
 		#Moves up or down on the board.
 		if (deltaY == -2 and source[0] == 1) or (deltaX == 0 and deltaY == -1):
-			if board[destination[0]][destination[1]] == "EMPTY" and deltaX == 0:
+			if destinationLocation.color == "EMPTY" and deltaX == 0:
 				return True
 			else:
 				return False
 		#Take another.
 		else:
-			if deltaY == -1 and (abs(deltaX) == 1):
-					if(board[destination[0]][destination[1]] in lightPieces.values()):
-						return True
-					else:
-						return False				
+			if deltaY == -1 and (abs(deltaX) == 1) and destinationLocation.color != 'EMPTY':
+				return True
 	else:
 		return False
-
-def bishop(source, destination, board, lightPieces, darkPieces):
-	# deltaY = destination[0]-source[0]
-	# deltaX = destination[1]-source[1]
+def bishop(source, destination, board):
+	deltaY = destination[0]-source[0]
+	deltaX = destination[1]-source[1]
 	
-	# if (deltaX !=0 and deltaY !=0) and abs(deltaX/deltaY) == 1:
-		# if(deltaY < 0):
-			# deltaPositions = range(source[0], destination[0])
-			# xModifier = 1
-		# else:
-			# deltaPositions = range(destination[0], destination[0])
-			# xModifier = -1
-		# for index in deltaPositions:
-			# if board[index][source[1] + xModifier] != 'EMPTY':
-				# if not board[source[0]][source[1]]:
-					# return False
-		# return True
-	# else:
-		# return False
-	return False
+	sourceLocation = board[source[0]][source[1]]
+	destinationLocation = board[destination[0]][destination[1]]
 	
-def tryingToTakeOwnPiece(source, destination, board, lightPieces, darkPieces):
-	pieces = {board[source[0]][source[1]], board[destination[0]][destination[1]]}
-	if pieces.issubset(lightPieces.values()) or pieces.issubset(darkPieces.values()):
+	if sourceLocation == 'EMPTY':
+		return False
+	
+	if destinationLocation != 'EMPTY':
+		if sourceLocation.color == destinationLocation.color:
+			return False
+			
+	if (deltaX !=0 and deltaY !=0) and abs(deltaX/(float(deltaY))) == 1:
+		if(deltaY < 0):
+			deltaPositions = range(source[0], destination[0])
+			xModifier = 1
+		else:
+			deltaPositions = range(destination[0], destination[0])
+			xModifier = -1
+		for index in deltaPositions:
+			if board[index][source[1] + xModifier] != 'EMPTY':
+				if not board[source[0]][source[1]]:
+					return False
 		return True
 	else:
 		return False
-		
-	

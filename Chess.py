@@ -34,8 +34,8 @@ class ChessGame:
 		self.loadSprites()
 		self.createPieces()
 		self.initializeBoard()
-		self.ruleController = RuleController.RuleController(self.board,self.darkPieces,self.lightPieces)
-		self.aiController = AIFunctions.AIFunctions(self.board,self.darkPieces, self.lightPieces)
+		self.ruleController = RuleController.RuleController(self.darkPieces,self.lightPieces)
+		self.aiController = AIFunctions.AIFunctions(self.lightPieces, self.darkPieces)
 		self.mainLoop()
 	
 	
@@ -64,44 +64,42 @@ class ChessGame:
 	def createPieces(self):
 		
 		self.darkPieces = {
-		'darkKing' : GamePieces.King(self.images.get('darkKing'),(0,4)),
-		'darkQueen' : GamePieces.Queen(self.images.get('darkQueen'),(0,3)),
-		'darkRook1' : GamePieces.Rook(self.images.get('darkRook'), (0,0)),
-		'darkRook2' : GamePieces.Rook(self.images.get('darkRook'), (0,7)),
-		'darkKnight1' : GamePieces.Knight(self.images.get('darkKnight'),(0,1)),
-		'darkKnight2' : GamePieces.Knight(self.images.get('darkKnight'),(0,6)),
-		'darkBishop1' : GamePieces.Bishop(self.images.get('darkBishop'),(0,5)),
-		'darkBishop2' : GamePieces.Bishop(self.images.get('darkBishop'),(0,2)),
-		'darkPawn1' : GamePieces.Pawn(self.images.get('darkPawn'),(1,0)),
-		'darkPawn2' : GamePieces.Pawn(self.images.get('darkPawn'),(1,1)),
-		'darkPawn3' : GamePieces.Pawn(self.images.get('darkPawn'),(1,2)),	
-		'darkPawn4' : GamePieces.Pawn(self.images.get('darkPawn'),(1,3)),
-		'darkPawn5' : GamePieces.Pawn(self.images.get('darkPawn'),(1,4)),
-		'darkPawn6' : GamePieces.Pawn(self.images.get('darkPawn'),(1,5)),
-		'darkPawn7' : GamePieces.Pawn(self.images.get('darkPawn'),(1,6)),
-		'darkPawn8' : GamePieces.Pawn(self.images.get('darkPawn'),(1,7)),
+		'darkKing' : GamePieces.King('darkKing',(0,4), 'black'),
+		'darkQueen' : GamePieces.Queen('darkQueen',(0,3),'black'),
+		'darkRook1' : GamePieces.Rook('darkRook', (0,0),'black'),
+		'darkRook2' : GamePieces.Rook('darkRook', (0,7),'black'),
+		'darkKnight1' : GamePieces.Knight('darkKnight',(0,1),'black'),
+		'darkKnight2' : GamePieces.Knight('darkKnight',(0,6),'black'),
+		'darkBishop1' : GamePieces.Bishop('darkBishop',(0,5),'black'),
+		'darkBishop2' : GamePieces.Bishop('darkBishop',(0,2),'black'),
+		'darkPawn1' : GamePieces.Pawn('darkPawn',(1,0),'black'),
+		'darkPawn2' : GamePieces.Pawn('darkPawn',(1,1),'black'),
+		'darkPawn3' : GamePieces.Pawn('darkPawn',(1,2),'black'),	
+		'darkPawn4' : GamePieces.Pawn('darkPawn',(1,3),'black'),
+		'darkPawn5' : GamePieces.Pawn('darkPawn',(1,4),'black'),
+		'darkPawn6' : GamePieces.Pawn('darkPawn',(1,5),'black'),
+		'darkPawn7' : GamePieces.Pawn('darkPawn',(1,6),'black'),
+		'darkPawn8' : GamePieces.Pawn('darkPawn',(1,7),'black'),
 		}
 
 		self.lightPieces = {
-		'lightKing' : GamePieces.King(self.images.get('lightKing'),(7,4)),
-		'lightQueen' : GamePieces.Queen(self.images.get('lightQueen'),(7,3)),
-		'lightRook1' : GamePieces.Rook(self.images.get('lightRook'), (7,0)),
-		'lightRook2' : GamePieces.Rook(self.images.get('lightRook'), (7,7)),
-		'lightKnight1' : GamePieces.Knight(self.images.get('lightKnight'),(7,1)),
-		'lightKnight2' : GamePieces.Knight(self.images.get('lightKnight'),(7,6)),
-		'lightBishop1' : GamePieces.Bishop(self.images.get('lightBishop'),(7,5)),
-		'lightBishop2' : GamePieces.Bishop(self.images.get('lightBishop'),(7,2)),
-		'lightPawn1' : GamePieces.Pawn(self.images.get('lightPawn'),(6,0)),
-		'lightPawn2' : GamePieces.Pawn(self.images.get('lightPawn'),(6,1)),
-		'lightPawn3' : GamePieces.Pawn(self.images.get('lightPawn'),(6,2)),		
-		'lightPawn4' : GamePieces.Pawn(self.images.get('lightPawn'),(6,3)),
-		'lightPawn5' : GamePieces.Pawn(self.images.get('lightPawn'),(6,4)),
-		'lightPawn6' : GamePieces.Pawn(self.images.get('lightPawn'),(6,5)),
-		'lightPawn7' : GamePieces.Pawn(self.images.get('lightPawn'),(6,6)),
-		'lightPawn8' : GamePieces.Pawn(self.images.get('lightPawn'),(6,7)),
+		'lightKing' : GamePieces.King(('lightKing'),(7,4),'white'),
+		'lightQueen' : GamePieces.Queen(('lightQueen'),(7,3),'white'),
+		'lightRook1' : GamePieces.Rook(('lightRook'), (7,0),'white'),
+		'lightRook2' : GamePieces.Rook(('lightRook'), (7,7),'white'),
+		'lightKnight1' : GamePieces.Knight(('lightKnight'),(7,1),'white'),
+		'lightKnight2' : GamePieces.Knight(('lightKnight'),(7,6),'white'),
+		'lightBishop1' : GamePieces.Bishop(('lightBishop'),(7,5),'white'),
+		'lightBishop2' : GamePieces.Bishop(('lightBishop'),(7,2),'white'),
+		'lightPawn1' : GamePieces.Pawn(('lightPawn'),(6,0),'white'),
+		'lightPawn2' : GamePieces.Pawn(('lightPawn'),(6,1),'white'),
+		'lightPawn3' : GamePieces.Pawn(('lightPawn'),(6,2),'white'),		
+		'lightPawn4' : GamePieces.Pawn(('lightPawn'),(6,3),'white'),
+		'lightPawn5' : GamePieces.Pawn(('lightPawn'),(6,4),'white'),
+		'lightPawn6' : GamePieces.Pawn(('lightPawn'),(6,5),'white'),
+		'lightPawn7' : GamePieces.Pawn(('lightPawn'),(6,6),'white'),
+		'lightPawn8' : GamePieces.Pawn(('lightPawn'),(6,7),'white'),
 		}
-		
-
 		
 		
 	def initializeBoard(self):
@@ -109,7 +107,7 @@ class ChessGame:
 		for y in range (8):
 			line = []
 			for x in range(8):
-				line.append("EMPTY")
+				line.append(GamePieces.Empty())
 			self.board.append(line)
 		
 		for piece in self.lightPieces.itervalues():
@@ -119,9 +117,7 @@ class ChessGame:
 			self.board[piece.position[0]][piece.position[1]] = piece		
 			
 	def mainLoop(self):
-		self.currentPlayer = self.lightPieces
-		print len(self.aiController.getAllMovesForPieces(self.currentPlayer))
-		print self.aiController.getAllMovesForPieces(self.currentPlayer)
+		self.currentPlayer = 'white'
 		while 1:
 			if(self.winner == None):
 				self.paintBoard()
@@ -132,22 +128,34 @@ class ChessGame:
 						position = event.pos
 						row = position[1]//self.HEIGHTBLOCK
 						col = position[0]//self.WIDTHBLOCK
-						if not self.selection1:
-							if self.board[row][col] in self.currentPlayer.values():
-								self.selection1 = (row, col)
-						elif self.selection1 == (row,col):
-							self.selection1 = ()
-						else:
-							self.selection2 = (row,col)
-							if self.ruleController.presentMove(self.selection1, self.selection2):
-								self.selection1 = () 
-								self.selection2 == ()
-								if self.currentPlayer == self.lightPieces:
-									self.currentPlayer = self.darkPieces
-								else:
-									self.currentPlayer = self.lightPieces
-								if 'darkKing' not in self.darkPieces.keys():
-									self.winner = "Light!"
+						
+						if self.currentPlayer == 'black':
+							if not self.selection1:
+								if self.board[row][col].color == 'black':
+									self.selection1 = (row, col)
+
+							elif self.selection1 == (row,col):
+								self.selection1 = ()
+
+							else:
+								self.selection2 = (row,col)
+								print "PING!"
+								if self.ruleController.presentMove(self.board,self.selection1, self.selection2):
+									self.board = self.ruleController.makeMove(self.board, self.selection1, self.selection2, True)
+									self.selection1 = () 
+									self.selection2 == ()
+									self.currentPlayer = 'white'
+				
+				if self.currentPlayer == 'white':
+					self.board = self.aiController.max(self.board)
+					self.currentPlayer = 'black'
+			
+
+			
+			
+			
+			
+			
 			else:
 				for event in pygame.event.get():
 					if event.type == pygame.QUIT:
@@ -168,12 +176,12 @@ class ChessGame:
 					pygame.draw.rect(self.screen,self.lightBrown, ((col*self.WIDTHBLOCK),(row*self.HEIGHTBLOCK),self.WIDTHBLOCK,self.HEIGHTBLOCK))
 				else:
 					pygame.draw.rect(self.screen,self.darkBrown, ((col*self.WIDTHBLOCK),(row*self.HEIGHTBLOCK),self.WIDTHBLOCK,self.HEIGHTBLOCK))
-				if self.board[row][col] != "EMPTY":
-					self.screen.blit(self.board[row][col].image, ((col*self.WIDTHBLOCK),(row*self.HEIGHTBLOCK)))
+				if self.board[row][col].color != "EMPTY":
+					self.screen.blit(self.images[self.board[row][col].image], ((col*self.WIDTHBLOCK),(row*self.HEIGHTBLOCK)))
 		
-		if self.ruleController.isChess(self.currentPlayer):
-			label = self.myfont.render("Chess!!", 1, (255,0,0))
-			self.screen.blit(label, (200, 50))
+		# if self.ruleController.isChess(self.board,self.currentPlayer):
+			# label = self.myfont.render("Chess!!", 1, (255,0,0))
+			# self.screen.blit(label, (200, 50))
 		pygame.display.flip()
 
 ChessGame().start()	
