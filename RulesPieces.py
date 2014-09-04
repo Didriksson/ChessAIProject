@@ -152,7 +152,7 @@ def bishop(source, destination, board):
 			return False
 			
 	if (deltaX !=0 and deltaY !=0) and abs(deltaX/(float(deltaY))) == 1:
-		if(deltaY > 0):
+		if(deltaY < 0):
 			deltaPositions = range(source[0], destination[0])
 			xModifier = 1
 		else:
@@ -164,6 +164,7 @@ def bishop(source, destination, board):
 				break
 			if board[index][col].color != 'EMPTY':
 				if board[index][col] is not board[source[0]][source[1]]:
+					print "I'm guessing this one?"
 					return False
 		return True
 	else:
