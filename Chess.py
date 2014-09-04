@@ -139,13 +139,13 @@ class ChessGame:
 
 							else:
 								self.selection2 = (row,col)
-								print "PING!"
 								if self.ruleController.presentMove(self.board,self.selection1, self.selection2):
 									self.board = self.ruleController.makeMove(self.board, self.selection1, self.selection2, True)
 									self.selection1 = () 
 									self.selection2 == ()
 									self.currentPlayer = 'white'
-				
+								else:
+									print 'Not OK move'
 				if self.currentPlayer == 'white':
 					self.board = self.aiController.max(self.board)
 					self.currentPlayer = 'black'
