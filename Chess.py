@@ -128,6 +128,12 @@ class ChessGame:
 						position = event.pos
 						row = position[1]//self.HEIGHTBLOCK
 						col = position[0]//self.WIDTHBLOCK
+
+
+						if self.currentPlayer == 'white':
+							pygame.time.wait(50)
+							self.board = self.aiController.max(self.board, self.currentPlayer)
+							self.currentPlayer = 'black'
 						
 						if self.currentPlayer == 'black':
 							if not self.selection1:
@@ -146,15 +152,6 @@ class ChessGame:
 									self.currentPlayer = 'white'
 								else:
 									print 'Not OK move'
-				if self.currentPlayer == 'white':
-					self.board = self.aiController.max(self.board)
-					self.currentPlayer = 'black'
-			
-
-			
-			
-			
-			
 			
 			else:
 				for event in pygame.event.get():

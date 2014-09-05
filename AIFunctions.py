@@ -10,8 +10,8 @@ class AIFunctions():
 		self.darkPieces = darkPieces
 		self.ruleController = RuleController.RuleController(self.lightPieces, self.darkPieces)
 	def evalutate(self, board):
-		whitePieces = self.getWhitePiecesOnBoard(board)
-		darkPieces = self.getDarkPiecesOnBoard(board)	
+		whitePieces = self.getPiecesOnBoardForColor(board, 'white')
+		darkPieces = self.getPiecesOnBoardForColor(board, 'black')	
 		whiteMaterial = 0
 		darkMaterial = 0
 		for piece in whitePieces:
@@ -26,21 +26,34 @@ class AIFunctions():
 	
 		return materialValue - 50 * (doubledPawnsValue + backwardPawnsValue + isolatedPawnsValue) + 10 * (mobilityValue) 
 		
+	def maxIterate(self, board, player, depth, maxDepth):
+		if depth == maxDepth:
+			return self.evalutate(board), None
 		
-	def max(self, board):
-		moves = self.getAllMovesForPieces(board,self.getWhitePiecesOnBoard(board))
-		bestScore = -9999
+		if player == 'white':
+			bestScore = -99999
+		else:
+			bestScore = 99999
+			
 		bestMove = None
+		
+		moves = self.getAllMovesForPieces(board,self.getPiecesOnBoardForColor(board, player))
 		for move in moves:
-			moveAfterBoard = self.ruleController.makeMove(board, move[1], move[2], False)
-			evalutedBoard = self.evalutate(moveAfterBoard)
-			if  evalutedBoard > bestScore:
-				bestScore = evalutedBoard
+			boardAfterMove = self.ruleController.makeMove(board, move[1], move[2], False)
+			score = self.maxIterate(boardAfterMove,player, depth + 1, maxDepth)[0]
+			score = -score
+		
+			if score > bestScore:
+				bestScore = score
 				bestMove = move
-		return self.ruleController.makeMove(board, bestMove[1], bestMove[2], True)
-
-			
-			
+		
+		return  bestScore, bestMove
+	
+	def max(self, board, player):
+		score, move = self.maxIterate(board, player, 0, 2)
+		print score
+		return self.ruleController.makeMove(board, move[1], move[2], False)
+				
 	def getAllMovesForPieces(self,board,pieces):
 		moves = []
 		for piece in pieces:
@@ -67,21 +80,12 @@ class AIFunctions():
 				break
 		return (row, col)
 		
-	def getWhitePiecesOnBoard(self, board):
+	def getPiecesOnBoardForColor(self, board, color):
 		currentPieces = {}
 		for row in range(8):
 			for col in range(8):
 				if board[row][col] != 'EMPTY':
-					if board[row][col].color == 'white':
-						currentPieces[board[row][col]] = (row,col)
-		return currentPieces
-		
-	def getDarkPiecesOnBoard(self, board):
-		currentPieces = {}
-		for row in range(8):
-			for col in range(8):
-				if board[row][col] != 'EMPTY':
-					if board[row][col].color == 'black':
+					if board[row][col].color == color:
 						currentPieces[board[row][col]] = (row,col)
 		return currentPieces
 		
