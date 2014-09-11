@@ -1,9 +1,9 @@
-def knight(source, destination, board):
-	deltaY = (source[0] - destination[0])
-	deltaX = (source[1] - destination[1])
+def knight(move, board):
+	deltaY = (move.source[0] - move.destination[0])
+	deltaX = (move.source[1] - move.destination[1])
 	
-	sourceLocation = board[source[0]][source[1]]
-	destinationLocation = board[destination[0]][destination[1]]
+	sourceLocation = board[move.source[0]][move.source[1]]
+	destinationLocation = board[move.destination[0]][move.destination[1]]
 	
 	if sourceLocation == 'EMPTY':
 		return False
@@ -17,13 +17,13 @@ def knight(source, destination, board):
 	else:
 		return False
 	
-def king(source, destination, board):
-	deltaY = destination[0]-source[0]
-	deltaX = destination[1]-source[1]
+def king(move, board):
+	deltaY = move.destination[0]-move.source[0]
+	deltaX = move.destination[1]-move.source[1]
 	
-	sourceLocation = board[source[0]][source[1]]
-	destinationLocation = board[destination[0]][destination[1]]
-
+	sourceLocation = board[move.source[0]][move.source[1]]
+	destinationLocation = board[move.destination[0]][move.destination[1]]
+	
 	if sourceLocation == 'EMPTY':
 		return False
 	
@@ -37,11 +37,11 @@ def king(source, destination, board):
 		return False
 
 	
-def rook(source, destination, board):
-	deltaY = (source[0] - destination[0])
-	deltaX = (source[1] - destination[1])
-	sourceLocation = board[source[0]][source[1]]
-	destinationLocation = board[destination[0]][destination[1]]
+def rook(move, board):
+	deltaY = (move.source[0] - move.destination[0])
+	deltaX = (move.source[1] - move.destination[1])
+	sourceLocation = board[move.source[0]][move.source[1]]
+	destinationLocation = board[move.destination[0]][move.destination[1]]
 	xModifier = 1
 	yModifier = 1
 	
@@ -72,10 +72,11 @@ def rook(source, destination, board):
 			xModifier = 0
 
 		for index in boardRange:
-			row = source[0] + index*yModifier
-			col = source[1] + index*xModifier
-			if col not in range(len(board)) or row not in range(len(board)):
+			row = move.source[0] + index*yModifier
+			col = move.source[1] + index*xModifier
+			if col not in range(8) or row not in range(8):
 				break
+
 			if board[row][col].color != 'EMPTY':
 				if board[row][col] is not sourceLocation:
 					return False
@@ -84,29 +85,28 @@ def rook(source, destination, board):
 		return False
 
 
-def queen(source, destination, board):
-	if king(source, destination, board):
+def queen(move, board):
+	if king(move, board):
 		#print "Moving with kings rules."
 		return True
-	if rook(source, destination, board):
+	if rook(move, board):
 		#print "Moving with rook rules."
 		return True
-	if pawn(source, destination, board):
+	if pawn(move, board):
 		#print "Moving with pawn rules."
 		return True
-	if bishop(source, destination, board):
+	if bishop(move, board):
 		#print "Moving with bishop rules."
 		return True
 
 	return False
 
-def pawn(source, destination, board):
-	deltaY = source[0] - destination[0]
-	deltaX = source[1] - destination[1]
+def pawn(move, board):
+	deltaY = move.source[0] - move.destination[0]
+	deltaX = move.source[1] - move.destination[1]
 	
-	sourceLocation = board[source[0]][source[1]]
-	destinationLocation = board[destination[0]][destination[1]]
-	
+	sourceLocation = board[move.source[0]][move.source[1]]
+	destinationLocation = board[move.destination[0]][move.destination[1]]	
 	if sourceLocation == 'EMPTY':
 		return False
 	
@@ -117,7 +117,7 @@ def pawn(source, destination, board):
 	#Light!
 	if sourceLocation.color == 'white':
 		#Moves up or down on the board.
-		if (deltaY == 2 and source[0] == 6) or (deltaX == 0 and deltaY == 1):
+		if (deltaY == 2 and move.source[0] == 6) or (deltaX == 0 and deltaY == 1):
 			if destinationLocation.color == "EMPTY" and deltaX == 0:
 				return True
 			else:
@@ -129,7 +129,7 @@ def pawn(source, destination, board):
 	#Dark!
 	elif sourceLocation.color == 'black':
 		#Moves up or down on the board.
-		if (deltaY == -2 and source[0] == 1) or (deltaX == 0 and deltaY == -1):
+		if (deltaY == -2 and move.source[0] == 1) or (deltaX == 0 and deltaY == -1):
 			if destinationLocation.color == "EMPTY" and deltaX == 0:
 				return True
 			else:
@@ -140,11 +140,11 @@ def pawn(source, destination, board):
 				return True
 	else:
 		return False
-def bishop(source, destination, board):
-	deltaY = destination[0]-source[0]
-	deltaX = destination[1]-source[1]
-	sourceLocation = board[source[0]][source[1]]
-	destinationLocation = board[destination[0]][destination[1]]
+def bishop(move, board):
+	deltaY = move.destination[0]-move.source[0]
+	deltaX = move.destination[1]-move.source[1]
+	sourceLocation = board[move.source[0]][move.source[1]]
+	destinationLocation = board[move.destination[0]][move.destination[1]]
 	
 	if sourceLocation.color == 'EMPTY':
 		return False
@@ -164,8 +164,8 @@ def bishop(source, destination, board):
 			yModifier = -1
 
 		for index in range(abs(deltaY)):
-			row = source[0] + index*yModifier
-			col = source[1] + index*xModifier
+			row = move.source[0] + index*yModifier
+			col = move.source[1] + index*xModifier
 			if col not in range(len(board)) or row not in range(len(board)):
 				break
 			if board[row][col].color != 'EMPTY':
