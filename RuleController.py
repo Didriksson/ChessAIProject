@@ -19,17 +19,23 @@ class RuleController():
 			return False
 			
 	def makeMove(self, board, move, realMove):
-		print board
 		newBoard = board.copyBoard()
 		sourcePiece = newBoard.board[move.source[0]][move.source[1]]
 		destinationPiece = newBoard.board[move.destination[0]][move.destination[1]]
-		if destinationPiece is GamePieces.King:
+		if isinstance(destinationPiece, GamePieces.King):
 			newBoard.winner = newBoard.currentPlayer
+
 		newBoard.board[move.destination[0]][move.destination[1]] = newBoard.board[move.source[0]][move.source[1]]
 		newBoard.board[move.source[0]][move.source[1]] = GamePieces.Empty()
 		newBoard.nextPlayer()
 		return newBoard
 
+	def isGameOver(self, board):
+		if board.winner == None:
+			return False
+		else:
+			return True
+		
 	def isChess(self,board,currentPlayer):
 		if currentPlayer == board.lightPieces:
 			kingsPosition = self.getPositionForPiece(board,GamePieces.King,'dark')

@@ -59,9 +59,11 @@ class ChessGame:
 	def mainLoop(self):
 		while 1:
 			if(self.board.winner == None):
-				self.paintBoard()
 				if self.board.currentPlayer == 'white':
 					move = self.aiController.max(self.board)
+					print move.source
+					print "Destination piece : ", self.board.board[move.destination[0]][move.destination[1]]
+					print "Source piece: ", self.board.board[move.source[0]][move.source[1]]
 					self.board = self.ruleController.makeMove(self.board, move, True)
 
 				for event in pygame.event.get():
@@ -90,12 +92,12 @@ class ChessGame:
 									self.selection2 == ()
 								else:
 									print 'Not OK move'
-			
+				self.paintBoard()			
 			else:
 				for event in pygame.event.get():
 					if event.type == pygame.QUIT:
 						pygame.quit()
-				label = self.myfont.render("Congratulations " + self.winner, 1, (255,0,0))
+				label = self.myfont.render("Congratulations " + self.board.winner, 1, (255,0,0))
 				self.screen.blit(label, (50, 150))
 				pygame.display.flip()
 
@@ -113,10 +115,6 @@ class ChessGame:
 					pygame.draw.rect(self.screen,self.darkBrown, ((col*self.WIDTHBLOCK),(row*self.HEIGHTBLOCK),self.WIDTHBLOCK,self.HEIGHTBLOCK))
 				if self.board.board[row][col].color != "EMPTY":
 					self.screen.blit(self.images[self.board.board[row][col].image], ((col*self.WIDTHBLOCK),(row*self.HEIGHTBLOCK)))
-		
-		# if self.ruleController.isChess(self.board,self.currentPlayer):
-			# label = self.myfont.render("Chess!!", 1, (255,0,0))
-			# self.screen.blit(label, (200, 50))
 		pygame.display.flip()
 
 ChessGame().start()	

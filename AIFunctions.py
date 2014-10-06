@@ -40,7 +40,8 @@ class AIFunctions():
 		for move in moves:
 			boardAfterMove = self.ruleController.makeMove(board, move, False)
 			score = self.maxIterate(boardAfterMove,player,depth + 1, maxDepth)[0]
-			score = score
+			if depth % 2 == 1:
+				score = -score
 		
 			if score > bestScore:
 				bestScore = score
@@ -50,7 +51,6 @@ class AIFunctions():
 	
 	def max(self, board):
 		score, move = self.maxIterate(board, board.currentPlayer, 0, 1)
-		print score
 		return move
 				
 	def getAllMovesForPieces(self,board,pieces):
@@ -97,6 +97,7 @@ class AIFunctions():
 				if pieces[pawn][1] == pieces[otherPawn][1] and paw is not otherPawn:
 					doubled = doubled +1
 		return doubled
+		
 	def getBackwardPawns(self,pieces):
 		pawns = self.getAllPawns(pieces)
 		return 0
