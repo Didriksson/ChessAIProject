@@ -7,14 +7,15 @@ class RuleController():
 	def presentMove(self,board,move):
 		sourcePiece = board.board[move.source[0]][move.source[1]]
 		destinationPiece = board.board[move.destination[0]][move.destination[1]]
-		if sourcePiece == 'EMPTY':
+		if sourcePiece == '' or sourcePiece in destinationPiece:
 			return False
+		
 
-		if not sourcePiece.color == destinationPiece.color:
-			nameOfPiece = type(sourcePiece).__name__
-			moveOkay = getattr(RulesPieces, nameOfPiece.lower())
-			if moveOkay(move, board.board):
-				return True
+		nameOfPiece = sourcePiece.replace('Black', '').replace('White','')
+		print nameOfPiece
+		moveOkay = getattr(RulesPieces, nameOfPiece.lower())
+		if moveOkay(move, board.board):
+			return True
 		else:
 			return False
 			
@@ -26,7 +27,7 @@ class RuleController():
 			newBoard.winner = newBoard.currentPlayer
 		
 		newBoard.board[move.destination[0]][move.destination[1]] = newBoard.board[move.source[0]][move.source[1]]
-		newBoard.board[move.source[0]][move.source[1]] = GamePieces.Empty()
+		newBoard.board[move.source[0]][move.source[1]] = ''
 		newBoard.nextPlayer()
 		return newBoard
 

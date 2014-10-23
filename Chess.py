@@ -29,25 +29,25 @@ class ChessGame:
 		self.loadSprites()
 		self.board = Board.Board()
 		self.ruleController = RuleController.RuleController()
-		self.aiController = AIFunctions.AIFunctions()
+#		self.aiController = AIFunctions.AIFunctions()
 		self.mainLoop()
-	
+		self.paintBoard()
 	
 	def loadSprites(self):
 		imageList = Spritesheet.Spritesheet("pieces.png").getAllSprites(2,6, 64,64,-1)
 		self.images = {
-		'darkKing' : imageList[0],
-		'darkQueen' : imageList[1],
-		'darkRook' : imageList[2],
-		'darkKnight' : imageList[3],
-		'darkBishop' : imageList[4],
-		'darkPawn' : imageList[5],
-		'lightKing' : imageList[6],
-		'lightQueen' : imageList[7],
-		'lightRook': imageList[8],
-		'lightKnight': imageList[9],
-		'lightBishop': imageList[10],
-		'lightPawn': imageList[11]
+		'BlackKing' : imageList[0],
+		'BlackQueen' : imageList[1],
+		'BlackRook' : imageList[2],
+		'BlackKnight' : imageList[3],
+		'BlackBishop' : imageList[4],
+		'BlackPawn' : imageList[5],
+		'WhiteKing' : imageList[6],
+		'WhiteQueen' : imageList[7],
+		'WhiteRook': imageList[8],
+		'WhiteKnight': imageList[9],
+		'WhiteBishop': imageList[10],
+		'WhitePawn': imageList[11]
 		}
 		
 		
@@ -58,12 +58,12 @@ class ChessGame:
 	def mainLoop(self):
 		while 1:
 			if(self.board.winner == None):
-				if self.board.currentPlayer == 'white':
-					move = self.aiController.max(self.board)
-					print move.source
-					print "Destination piece : ", self.board.board[move.destination[0]][move.destination[1]]
-					print "Source piece: ", self.board.board[move.source[0]][move.source[1]]
-					self.board = self.ruleController.makeMove(self.board, move, True)
+				#if self.board.currentPlayer == 'white':
+					#move = self.aiController.max(self.board)
+					#print move.source
+					#print "Destination piece : ", self.board.board[move.destination[0]][move.destination[1]]
+					#print "Source piece: ", self.board.board[move.source[0]][move.source[1]]
+					#self.board = self.ruleController.makeMove(self.board, move, True)"""
 
 				for event in pygame.event.get():
 					if event.type == pygame.QUIT:
@@ -74,9 +74,9 @@ class ChessGame:
 						row = position[1]//self.HEIGHTBLOCK
 						col = position[0]//self.WIDTHBLOCK
 						
-						if self.board.currentPlayer == 'black':
+						if self.board.currentPlayer == 'white':
 							if not self.selection1:
-								if self.board.board[row][col].color == 'black':
+								if 'Black' in self.board.board[row][col]:
 									self.selection1 = (row, col)
 
 							elif self.selection1 == (row,col):
@@ -90,7 +90,7 @@ class ChessGame:
 									self.selection1 = () 
 									self.selection2 == ()
 								else:
-									print 'Not OK move'
+									print 'Not OK move'""
 				self.paintBoard()			
 			else:
 				for event in pygame.event.get():
@@ -112,8 +112,8 @@ class ChessGame:
 					pygame.draw.rect(self.screen,self.lightBrown, ((col*self.WIDTHBLOCK),(row*self.HEIGHTBLOCK),self.WIDTHBLOCK,self.HEIGHTBLOCK))
 				else:
 					pygame.draw.rect(self.screen,self.darkBrown, ((col*self.WIDTHBLOCK),(row*self.HEIGHTBLOCK),self.WIDTHBLOCK,self.HEIGHTBLOCK))
-				if self.board.board[row][col].color != "EMPTY":
-					self.screen.blit(self.images[self.board.board[row][col].image], ((col*self.WIDTHBLOCK),(row*self.HEIGHTBLOCK)))
+				if self.board.board[row][col] != '':
+					self.screen.blit(self.images[self.board.board[row][col]], ((col*self.WIDTHBLOCK),(row*self.HEIGHTBLOCK)))
 		pygame.display.flip()
 
 ChessGame().start()	

@@ -5,11 +5,11 @@ def knight(move, board):
 	sourceLocation = board[move.source[0]][move.source[1]]
 	destinationLocation = board[move.destination[0]][move.destination[1]]
 	
-	if sourceLocation == 'EMPTY':
+	if sourceLocation == '':
 		return False
 	
-	if destinationLocation != 'EMPTY':
-		if sourceLocation.color == destinationLocation.color:
+	if destinationLocation != '':
+		if sourceLocation in destinationLocation:
 			return False
 		
 	if abs(deltaX) == 2 and abs(deltaY) == 1 or abs(deltaX) == 1 and abs(deltaY) == 2:
@@ -24,11 +24,11 @@ def king(move, board):
 	sourceLocation = board[move.source[0]][move.source[1]]
 	destinationLocation = board[move.destination[0]][move.destination[1]]
 	
-	if sourceLocation == 'EMPTY':
+	if sourceLocation == '':
 		return False
 	
-	if destinationLocation != 'EMPTY':
-		if sourceLocation.color == destinationLocation.color:
+	if destinationLocation != '':
+		if sourceLocation in destinationLocation:
 			return False
 			
 	if abs(deltaY) <= 1 and abs(deltaX) <=1:
@@ -45,11 +45,11 @@ def rook(move, board):
 	xModifier = 1
 	yModifier = 1
 	
-	if sourceLocation.color == 'EMPTY':
+	if sourceLocation.color == '':
 		return False
 	
-	if destinationLocation.color != 'EMPTY':
-		if sourceLocation.color == destinationLocation.color:
+	if destinationLocation.color != '':
+		if sourceLocation in destinationLocation:
 			return False
 			
 	if (deltaX * deltaY) == 0:
@@ -77,7 +77,7 @@ def rook(move, board):
 			if col not in range(8) or row not in range(8):
 				break
 
-			if board[row][col].color != 'EMPTY':
+			if board[row][col] != '':
 				if board[row][col] is not sourceLocation:
 					return False
 		return True
@@ -107,36 +107,36 @@ def pawn(move, board):
 	
 	sourceLocation = board[move.source[0]][move.source[1]]
 	destinationLocation = board[move.destination[0]][move.destination[1]]	
-	if sourceLocation == 'EMPTY':
+	if sourceLocation == '':
 		return False
 	
-	if destinationLocation != 'EMPTY':
-		if sourceLocation.color == destinationLocation.color:
+	if destinationLocation != '':
+		if sourceLocation in destinationLocation:
 			return False
 
-	#Light!
-	if sourceLocation.color == 'white':
+	#White!
+	if 'White' in sourceLocation:
 		#Moves up or down on the board.
 		if (deltaY == 2 and move.source[0] == 6) or (deltaX == 0 and deltaY == 1):
-			if destinationLocation.color == "EMPTY" and deltaX == 0:
+			if destinationLocation == "" and deltaX == 0:
 				return True
 			else:
 				return False
 		#Take another.
 		else:
-			if deltaY == 1 and (abs(deltaX) == 1) and destinationLocation.color != 'EMPTY':
+			if deltaY == 1 and (abs(deltaX) == 1) and destinationLocation != '':
 				return True
-	#Dark!
-	elif sourceLocation.color == 'black':
+	#Black!
+	elif 'Black' in sourceLocation:
 		#Moves up or down on the board.
 		if (deltaY == -2 and move.source[0] == 1) or (deltaX == 0 and deltaY == -1):
-			if destinationLocation.color == "EMPTY" and deltaX == 0:
+			if destinationLocation == "" and deltaX == 0:
 				return True
 			else:
 				return False
 		#Take another.
 		else:
-			if deltaY == -1 and (abs(deltaX) == 1) and destinationLocation.color != 'EMPTY':
+			if deltaY == -1 and (abs(deltaX) == 1) and destinationLocation != '':
 				return True
 	else:
 		return False
@@ -146,11 +146,11 @@ def bishop(move, board):
 	sourceLocation = board[move.source[0]][move.source[1]]
 	destinationLocation = board[move.destination[0]][move.destination[1]]
 	
-	if sourceLocation.color == 'EMPTY':
+	if sourceLocation == '':
 		return False
 	
-	if destinationLocation.color != 'EMPTY':
-		if sourceLocation.color == destinationLocation.color:
+	if destinationLocation != '':
+		if sourceLocation in destinationLocation:
 			return False
 			
 	if (deltaX !=0 and deltaY !=0) and abs(deltaX/(float(deltaY))) == 1:
@@ -168,7 +168,7 @@ def bishop(move, board):
 			col = move.source[1] + index*xModifier
 			if col not in range(len(board)) or row not in range(len(board)):
 				break
-			if board[row][col].color != 'EMPTY':
+			if board[row][col] != '':
 				if board[row][col] is not sourceLocation:
 					return False
 		return True
