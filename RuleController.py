@@ -12,7 +12,6 @@ class RuleController():
 		
 
 		nameOfPiece = sourcePiece.replace('Black', '').replace('White','')
-		print nameOfPiece
 		moveOkay = getattr(RulesPieces, nameOfPiece.lower())
 		if moveOkay(move, board.board):
 			return True

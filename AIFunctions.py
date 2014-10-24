@@ -6,59 +6,64 @@ import Move
 
 class AIFunctions():
 	
+	
 	def __init__(self):
 		self.ruleController = RuleController.RuleController()
+		self.gamePieceInformation = {
+			'Pawn' : GamePieces.Pawn(),
+			'Rook' : GamePieces.Rook(),
+			'Bishop' : GamePieces.Pawn(),
+			'Queen' : GamePieces.Pawn(),
+			'King' : GamePieces.Pawn(),
+			'Knight' : GamePieces.Pawn()	
+		}
+
 	def evalutate(self, board):
-		whitePieces = self.getPiecesOnBoardForColor(board, 'white')
-		darkPieces = self.getPiecesOnBoardForColor(board, 'black')	
+		whitePieces = self.getPiecesOnBoardForColor(board, 'White')
+		blackPieces = self.getPiecesOnBoardForColor(board, 'Black')
 		whiteMaterial = 0
-		darkMaterial = 0
+		blackMaterial = 0
 		for piece in whitePieces:
-			whiteMaterial = whiteMaterial + self.evaluteScoreForPiece(piece, whitePieces[piece])
-		for piece in darkPieces:
-			darkMaterial = darkMaterial + self.evaluteScoreForPiece(piece, darkPieces[piece])
-		materialValue = (whiteMaterial - darkMaterial)
-		doubledPawnsValue = (self.getDoubledPawns(whitePieces) - self.getDoubledPawns(darkPieces))
-		backwardPawnsValue = (self.getBackwardPawns(whitePieces)-self.getBackwardPawns(darkPieces))
-		isolatedPawnsValue =  (self.getIsolatedPawns(whitePieces, board)-self.getIsolatedPawns(darkPieces, board))
-		mobilityValue =  len(self.getAllMovesForPieces(board,whitePieces)) - len(self.getAllMovesForPieces(board,darkPieces))
-	
-		return materialValue - 50 * (doubledPawnsValue + backwardPawnsValue + isolatedPawnsValue) + 10 * (mobilityValue) 
+			whiteMaterial = whiteMaterial + self.evaluteScoreForPiece(piece[0], piece[1])
+		for piece in blackPieces:
+			blackMaterial = blackMaterial + self.evaluteScoreForPiece(piece[0], piece[1])
+		materialValue = (whiteMaterial - blackMaterial)
+
+		return materialValue
 		
-	def maxIterate(self, board, player, depth, maxDepth):
-		if depth == maxDepth:
-			return self.evalutate(board), None
+	def negaMax(self, board, depth):
+		if depth == 0:
+			return self.evalutate(board)
 		
-		if player == 'white':
-			bestScore = -99999
-		else:
-			bestScore = 99999
-			
-		bestMove = None
-		
-		moves = self.getAllMovesForPieces(board,self.getPiecesOnBoardForColor(board, player))
+		bestscore = -9999999
+		moves = self.getAllMovesForPieces(board,self.getPiecesOnBoardForColor(board, board.currentPlayer))
+
 		for move in moves:
 			boardAfterMove = self.ruleController.makeMove(board, move, False)
-			score = self.maxIterate(boardAfterMove,player,depth + 1, maxDepth)[0]
-			if depth % 2 == 1:
-				score = -score
-		
-			if score > bestScore:
-				bestScore = score
-				bestMove = move
-		
-		return  bestScore, bestMove
-	
+			score = - self.negaMax(boardAfterMove,depth - 1)
+			bestscore = max(bestscore,score)
+		return bestscore
+
 	def max(self, board):
-		score, move = self.maxIterate(board, board.currentPlayer, 0, 1)
-		return move
+		DEPTH = 2
+
+		bestscore = -9999999
+		bestmove = None
+		moves = self.getAllMovesForPieces(board,self.getPiecesOnBoardForColor(board, board.currentPlayer))
+		for move in moves:
+			boardAfterMove = self.ruleController.makeMove(board, move, False)
+			score = -self.negaMax(boardAfterMove,DEPTH -1)
+			if score > bestscore:
+				bestscore = score
+				bestmove = move
+		return bestmove
 				
 	def getAllMovesForPieces(self,board,pieces):
 		moves = []
 		for piece in pieces:
-			nameOfPiece = type(piece).__name__
+			nameOfPiece = piece[0].replace('Black', '').replace('White','')
 			moveOkay = getattr(RulesPieces, nameOfPiece.lower())
-			source = self.getPositionForPiece(piece, board)
+			source = piece[1]
 			for row in range(8):
 				for col in range(8):
 					destination = (row,col)
@@ -68,8 +73,9 @@ class AIFunctions():
 		return moves
 		
 	def evaluteScoreForPiece(self, piece, position):
-		score = piece.pieceScore
-		score = score + piece.pieceTable[position[0]][position[1]]
+		nameOfPiece = piece.replace('Black', '').replace('White','')
+		score = self.gamePieceInformation[nameOfPiece].pieceScore
+	#	score = score + self.gamePieceInformation[nameOfPiece].pieceTable[position[0]][position[1]]
 		return score
 		
 
@@ -81,12 +87,12 @@ class AIFunctions():
 		return (row, col)
 		
 	def getPiecesOnBoardForColor(self, board, color):
-		currentPieces = {}
+		currentPieces = []
 		for row in range(8):
 			for col in range(8):
-				if board.board[row][col] != 'EMPTY':
-					if board.board[row][col].color == color:
-						currentPieces[board.board[row][col]] = (row,col)
+				if board.board[row][col] != '':
+					if color in board.board[row][col]:
+						currentPieces.append((board.board[row][col],(row,col)))
 		return currentPieces
 		
 	def getDoubledPawns(self, pieces):

@@ -7,7 +7,7 @@ class Board():
 	
 	def __init__(self):
 		self.setUpBoard()
-		self.currentPlayer = 'white'
+		self.currentPlayer = 'White'
 		
 	def setUpBoard(self):
 		#Initialize board with pieces
@@ -16,15 +16,15 @@ class Board():
   					  ["","","","","","","",""],
   					  ["","","","","","","",""],
   					  ["","","","","","","",""],
-  					  ["","","","","","","",""],
+  					  ["","BlackKnight","","","","","",""],
   					  ["WhitePawn","WhitePawn","WhitePawn","WhitePawn","WhitePawn","WhitePawn","WhitePawn","WhitePawn"],
 					  ["WhiteRook","WhiteKnight","WhiteBishop", "WhiteQueen", "WhiteKing", "WhiteBishop", "WhiteKnight", "WhiteRook"]]
 
 	def nextPlayer(self):
-		if self.currentPlayer == 'white':
-			self.currentPlayer = 'black'
+		if self.currentPlayer == 'White':
+			self.currentPlayer = 'Black'
 		else:
-			self.currentPlayer = 'white'
+			self.currentPlayer = 'White'
 			
 	def copyBoard(self):
 		newBoard = Board()

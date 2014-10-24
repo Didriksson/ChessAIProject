@@ -9,7 +9,7 @@ def knight(move, board):
 		return False
 	
 	if destinationLocation != '':
-		if sourceLocation in destinationLocation:
+		if ('White' in destinationLocation and 'White' in sourceLocation) or ('Black' in destinationLocation and 'Black' in sourceLocation):
 			return False
 		
 	if abs(deltaX) == 2 and abs(deltaY) == 1 or abs(deltaX) == 1 and abs(deltaY) == 2:
@@ -28,7 +28,7 @@ def king(move, board):
 		return False
 	
 	if destinationLocation != '':
-		if sourceLocation in destinationLocation:
+		if ('White' in destinationLocation and 'White' in sourceLocation) or ('Black' in destinationLocation and 'Black' in sourceLocation):
 			return False
 			
 	if abs(deltaY) <= 1 and abs(deltaX) <=1:
@@ -45,11 +45,11 @@ def rook(move, board):
 	xModifier = 1
 	yModifier = 1
 	
-	if sourceLocation.color == '':
+	if sourceLocation == '':
 		return False
 	
-	if destinationLocation.color != '':
-		if sourceLocation in destinationLocation:
+	if destinationLocation != '':
+		if ('White' in destinationLocation and 'White' in sourceLocation) or ('Black' in destinationLocation and 'Black' in sourceLocation):
 			return False
 			
 	if (deltaX * deltaY) == 0:
@@ -111,7 +111,7 @@ def pawn(move, board):
 		return False
 	
 	if destinationLocation != '':
-		if sourceLocation in destinationLocation:
+		if ('White' in destinationLocation and 'White' in sourceLocation) or ('Black' in destinationLocation and 'Black' in sourceLocation):
 			return False
 
 	#White!
@@ -150,7 +150,7 @@ def bishop(move, board):
 		return False
 	
 	if destinationLocation != '':
-		if sourceLocation in destinationLocation:
+		if ('White' in destinationLocation and 'White' in sourceLocation) or ('Black' in destinationLocation and 'Black' in sourceLocation):
 			return False
 			
 	if (deltaX !=0 and deltaY !=0) and abs(deltaX/(float(deltaY))) == 1:

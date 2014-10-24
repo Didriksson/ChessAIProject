@@ -1,6 +1,5 @@
 import pygame
 import Spritesheet
-import GamePieces
 import RuleController
 import AIFunctions
 import Board
@@ -29,7 +28,7 @@ class ChessGame:
 		self.loadSprites()
 		self.board = Board.Board()
 		self.ruleController = RuleController.RuleController()
-#		self.aiController = AIFunctions.AIFunctions()
+		self.aiController = AIFunctions.AIFunctions()
 		self.mainLoop()
 		self.paintBoard()
 	
@@ -58,12 +57,12 @@ class ChessGame:
 	def mainLoop(self):
 		while 1:
 			if(self.board.winner == None):
-				#if self.board.currentPlayer == 'white':
-					#move = self.aiController.max(self.board)
-					#print move.source
-					#print "Destination piece : ", self.board.board[move.destination[0]][move.destination[1]]
-					#print "Source piece: ", self.board.board[move.source[0]][move.source[1]]
-					#self.board = self.ruleController.makeMove(self.board, move, True)"""
+				if self.board.currentPlayer == 'White':
+					move = self.aiController.max(self.board)
+					print move.source
+					print "Destination piece : ", self.board.board[move.destination[0]][move.destination[1]]
+					print "Source piece: ", self.board.board[move.source[0]][move.source[1]]
+					self.board = self.ruleController.makeMove(self.board, move, True)
 
 				for event in pygame.event.get():
 					if event.type == pygame.QUIT:
@@ -74,7 +73,7 @@ class ChessGame:
 						row = position[1]//self.HEIGHTBLOCK
 						col = position[0]//self.WIDTHBLOCK
 						
-						if self.board.currentPlayer == 'white':
+						if self.board.currentPlayer == 'Black':
 							if not self.selection1:
 								if 'Black' in self.board.board[row][col]:
 									self.selection1 = (row, col)
