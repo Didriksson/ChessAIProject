@@ -75,7 +75,7 @@ class AIFunctions():
 	def evaluteScoreForPiece(self, piece, position):
 		nameOfPiece = piece.replace('Black', '').replace('White','')
 		score = self.gamePieceInformation[nameOfPiece].pieceScore
-	#	score = score + self.gamePieceInformation[nameOfPiece].pieceTable[position[0]][position[1]]
+		score = score + self.gamePieceInformation[nameOfPiece].pieceTable[position[0]][position[1]]
 		return score
 		
 

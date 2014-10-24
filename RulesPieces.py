@@ -38,8 +38,12 @@ def king(move, board):
 
 	
 def rook(move, board):
-	deltaY = (move.source[0] - move.destination[0])
-	deltaX = (move.source[1] - move.destination[1])
+	deltaY = (move.destination[0] - move.source[0])
+	deltaX = (move.destination[1] - move.source[1])
+	print (deltaY, deltaX)
+	print ""
+	print ""
+	
 	sourceLocation = board[move.source[0]][move.source[1]]
 	destinationLocation = board[move.destination[0]][move.destination[1]]
 	xModifier = 1
@@ -80,6 +84,7 @@ def rook(move, board):
 			if board[row][col] != '':
 				if board[row][col] is not sourceLocation:
 					return False
+					
 		return True
 	else:
 		return False
@@ -90,7 +95,7 @@ def queen(move, board):
 		#print "Moving with kings rules."
 		return True
 	if rook(move, board):
-		#print "Moving with rook rules."
+		print "Moving with rook rules."
 		return True
 	if pawn(move, board):
 		#print "Moving with pawn rules."

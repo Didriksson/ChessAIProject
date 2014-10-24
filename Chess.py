@@ -57,13 +57,6 @@ class ChessGame:
 	def mainLoop(self):
 		while 1:
 			if(self.board.winner == None):
-				if self.board.currentPlayer == 'White':
-					move = self.aiController.max(self.board)
-					print move.source
-					print "Destination piece : ", self.board.board[move.destination[0]][move.destination[1]]
-					print "Source piece: ", self.board.board[move.source[0]][move.source[1]]
-					self.board = self.ruleController.makeMove(self.board, move, True)
-
 				for event in pygame.event.get():
 					if event.type == pygame.QUIT:
 						pygame.quit()
@@ -73,9 +66,9 @@ class ChessGame:
 						row = position[1]//self.HEIGHTBLOCK
 						col = position[0]//self.WIDTHBLOCK
 						
-						if self.board.currentPlayer == 'Black':
+						if self.board.currentPlayer == 'White':
 							if not self.selection1:
-								if 'Black' in self.board.board[row][col]:
+								if 'White' in self.board.board[row][col]:
 									self.selection1 = (row, col)
 
 							elif self.selection1 == (row,col):
@@ -84,6 +77,7 @@ class ChessGame:
 							else:
 								self.selection2 = (row,col)
 								move = Move.Move(self.selection1, self.selection2)
+								
 								if self.ruleController.presentMove(self.board,move):
 									self.board= self.ruleController.makeMove(self.board, move, True)
 									self.selection1 = () 

@@ -27,7 +27,7 @@ class RuleController():
 		
 		newBoard.board[move.destination[0]][move.destination[1]] = newBoard.board[move.source[0]][move.source[1]]
 		newBoard.board[move.source[0]][move.source[1]] = ''
-		newBoard.nextPlayer()
+		#newBoard.nextPlayer()
 		return newBoard
 
 	def isGameOver(self, board):

@@ -16,7 +16,7 @@ class Board():
   					  ["","","","","","","",""],
   					  ["","","","","","","",""],
   					  ["","","","","","","",""],
-  					  ["","BlackKnight","","","","","",""],
+  					  ["","","","","","","",""],
   					  ["WhitePawn","WhitePawn","WhitePawn","WhitePawn","WhitePawn","WhitePawn","WhitePawn","WhitePawn"],
 					  ["WhiteRook","WhiteKnight","WhiteBishop", "WhiteQueen", "WhiteKing", "WhiteBishop", "WhiteKnight", "WhiteRook"]]
 
